@@ -1,0 +1,82 @@
+{
+  "hostname": "filter.example.com",
+
+  "listeners": [
+    { "addr": ":25",  "tls": "starttls" },
+    { "addr": ":465", "tls": "implicit" }
+  ],
+
+  "tls": {
+    "cert": "cert.pem",
+    "key":  "key.pem"
+  },
+
+  "limits": {
+    "max_message_bytes": 10485760,
+    "max_connections": 64,
+    "command_timeout_sec": 60,
+    "session_timeout_sec": 300
+  },
+
+  "dns": {
+    "timeout_sec": 5,
+    "server": "1.1.1.1:53"
+  },
+
+  "retry": {
+    "enabled": true,
+    "interval_sec": 60,
+    "expire_sec": 3600,
+    "max_entries": 500,
+    "max_bytes": 268435456
+  },
+
+  "cidr_whitelist": [
+    { "cidr": "10.0.0.0/8" },
+    { "cidr": "203.0.113.44/32", "domains": ["vendor.example"] }
+  ],
+
+  "providers": [
+    {
+      "name": "google",
+      "ptr_suffixes": ["google.com", "googlemail.com"],
+      "domains": ["gmail.com", "googlemail.com"],
+      "require_spf": true
+    }
+  ],
+
+  "whitelist": [
+    { "match": "address", "value": "alerts@vendor.com", "require_spf": true },
+    { "match": "domain",  "value": "partner.example",   "require_spf": true },
+    { "match": "domain",  "value": "legacy.example",    "require_spf": false }
+  ],
+
+  "routes": [
+    {
+      "recipient": "hook@filter.example.com",
+      "match": "address",
+      "type": "webhook",
+      "url": "https://internal.example/api/mail",
+      "secret": "change-this",
+      "timeout_sec": 20
+    },
+    {
+      "recipient": "run@filter.example.com",
+      "match": "address",
+      "type": "command",
+      "path": "/usr/local/bin/handle",
+      "args": ["--from-smtp"],
+      "temp_fail_exit_code": 75,
+      "timeout_sec": 30
+    },
+    {
+      "recipient": "fwd@filter.example.com",
+      "match": "address",
+      "type": "forward",
+      "host": "127.0.0.1",
+      "port": 2525,
+      "timeout_sec": 30
+    }
+  ]
+}
+
