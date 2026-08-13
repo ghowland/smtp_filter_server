@@ -12,6 +12,8 @@ mail server.
 The process performs no disk write operations. Message data exists only in
 memory and does not survive a restart.
 
+![smtp_filter Flow](docs/smtp_filter.png)
+
 ## Contents
 
 - [How it works](#how-it-works)
