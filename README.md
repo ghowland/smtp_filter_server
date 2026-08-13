@@ -372,6 +372,15 @@ Set an alert on all of them.
 
 A `sender rejected` or `recipient rejected` entry is the only symptom of a fault in the whitelist or the route table, because the sending host receivesan ordinary rejection and reports nothing back to you. Read these after every configuration change.
 
+### Example Logs
+
+```
+{"time":"2026-08-13T10:28:23.459121268+07:00","level":"INFO","msg":"started","hostname":"filter.example.com","listeners":2,"routes":3,"retry":true}
+{"time":"2026-08-13T10:28:23.460233372+07:00","level":"INFO","msg":"listening","addr":":25","tls":"starttls"}
+{"time":"2026-08-13T10:28:23.46033189+07:00","level":"INFO","msg":"listening","addr":":465","tls":"implicit"}
+{"time":"2026-08-13T10:30:14.897499071+07:00","level":"WARN","msg":"sender rejected","peer":"127.0.0.1","tls":false,"from":"a@test","rule":"default","spf":"","reason":"sender not whitelisted"}
+```
+
 ## Memory use
 
 Two products bound the memory used by message data:
@@ -415,14 +424,6 @@ WantedBy=multi-user.target
 
 Remove `NoNewPrivileges` if a command route needs to change identity. A restart discards the queue, so drain it or accept the loss.
 
-## Logs
-
-```
-{"time":"2026-08-13T10:28:23.459121268+07:00","level":"INFO","msg":"started","hostname":"filter.example.com","listeners":2,"routes":3,"retry":true}
-{"time":"2026-08-13T10:28:23.460233372+07:00","level":"INFO","msg":"listening","addr":":25","tls":"starttls"}
-{"time":"2026-08-13T10:28:23.46033189+07:00","level":"INFO","msg":"listening","addr":":465","tls":"implicit"}
-{"time":"2026-08-13T10:30:14.897499071+07:00","level":"WARN","msg":"sender rejected","peer":"127.0.0.1","tls":false,"from":"a@test","rule":"default","spf":"","reason":"sender not whitelisted"}
-```
 
 ## Limitations
 
